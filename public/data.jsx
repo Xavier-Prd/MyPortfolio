@@ -3,7 +3,7 @@
 const PROFILE = {
   name: "Xavier Pardoue",
   role: "Développeur Ruby on Rails",
-  location: "Paris, France",
+  location: "Lille, France",
   baseline: "Je construis des applications web robustes, lisibles, et qui durent.",
   email: "pardoue.xavier@gmail.com",
   github: "github.com/Xavier-Prd",
