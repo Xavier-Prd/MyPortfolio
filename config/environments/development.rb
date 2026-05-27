@@ -38,15 +38,14 @@ Rails.application.configure do
 
   config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
 
-  # On utilise le vrai SMTP Gmail en dev pour pouvoir tester l'envoi réel
+  # On utilise Mailjet SMTP pour tester l'envoi réel en dev
   # Les credentials viennent du fichier .env chargé par dotenv-rails
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-    address:              "smtp.gmail.com",
+    address:              "in-v3.mailjet.com",
     port:                 587,
-    domain:               "gmail.com",
-    user_name:            ENV["GMAIL_USER"],
-    password:             ENV["GMAIL_APP_PASSWORD"],
+    user_name:            ENV["MAILJET_API_KEY"],
+    password:             ENV["MAILJET_SECRET_KEY"],
     authentication:       :plain,
     enable_starttls_auto: true
   }

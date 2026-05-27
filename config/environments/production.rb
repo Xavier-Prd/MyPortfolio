@@ -62,13 +62,12 @@ Rails.application.configure do
   # Config SMTP Gmail — les valeurs viennent de variables d'environnement
   # (ne jamais mettre de mot de passe en dur dans le code)
   config.action_mailer.smtp_settings = {
-    address:              "smtp.gmail.com",
+    address:              "in-v3.mailjet.com",
     port:                 587,
-    domain:               "gmail.com",
-    user_name:            ENV["GMAIL_USER"],          # ex: pardoue.xavier@gmail.com
-    password:             ENV["GMAIL_APP_PASSWORD"],  # App Password Gmail (pas le vrai mdp)
+    user_name:            ENV["MAILJET_API_KEY"],
+    password:             ENV["MAILJET_SECRET_KEY"],
     authentication:       :plain,
-    enable_starttls_auto: true                        # chiffrement TLS obligatoire
+    enable_starttls_auto: true
   }
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
