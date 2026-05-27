@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Portfolio — Développeur Rails</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@300;400;500&family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    --bg:           oklch(0.08 0.015 95);
+    --bg-deep:      oklch(0.05 0.012 95);
+    --surface:      oklch(0.13 0.025 95);
+    --surface-2:    oklch(0.17 0.03 95);
+    --line:         oklch(0.28 0.04 95 / 0.5);
+    --line-soft:    oklch(0.28 0.04 95 / 0.22);
+    --text:         oklch(0.94 0.012 95);
+    --text-mute:    oklch(0.72 0.025 95);
+    --text-dim:     oklch(0.52 0.03 95);
+    --accent:       oklch(0.87 0.18 95);
+    --accent-deep:  oklch(0.72 0.17 90);
+    --accent-glow:  oklch(0.87 0.18 95 / 0.55);
+    --serif:        "Instrument Serif", "Times New Roman", serif;
+    --sans:         "Geist", ui-sans-serif, system-ui, sans-serif;
+    --mono:         "JetBrains Mono", ui-monospace, monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body { height: 100%; background: var(--bg-deep); }
+
+  body {
+    font-family: var(--sans);
+    font-weight: 400;
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    line-height: 1.5;
+    letter-spacing: -0.005em;
+  }
+
+  /* ----------- Background layers ----------- */
+  .sky-bg {
+    position: fixed; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse 45% 35% at 18% 22%, oklch(0.32 0.10 95 / 0.35), transparent 60%),
+      radial-gradient(ellipse 55% 40% at 82% 78%, oklch(0.28 0.09 95 / 0.4), transparent 65%),
+      radial-gradient(ellipse 40% 30% at 65% 15%, oklch(0.22 0.08 95 / 0.25), transparent 60%),
+      var(--bg-deep);
+    pointer-events: none;
+  }
+  .sky-bg::after {
+    content: ""; position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at center, transparent 40%, oklch(0.05 0.012 95 / 0.6) 95%);
+  }
+
+  #stars {
+    position: fixed; inset: 0;
+    z-index: 1; pointer-events: none;
+  }
+
+  /* ----------- Layout shell ----------- */
+  .app {
+    position: relative;
+    z-index: 2;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ----------- Nav ----------- */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 22px 48px;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    background: linear-gradient(180deg, oklch(0.06 0.015 95 / 0.85), oklch(0.06 0.015 95 / 0.55));
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .nav-brand {
+    font-family: var(--mono);
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text);
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none;
+  }
+  .nav-brand .dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 14px var(--accent-glow), 0 0 32px var(--accent-glow);
+  }
+  .nav-links { display: flex; gap: 4px; align-items: center; }
+  .nav-link {
+    font-family: var(--mono);
+    font-size: 12px;
+    text-transform: lowercase;
+    letter-spacing: 0.05em;
+    color: var(--text-mute);
+    padding: 8px 14px;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: color 0.2s ease, background 0.2s ease;
+  }
+  .nav-link:hover { color: var(--text); }
+  .nav-link.active {
+    color: var(--accent);
+    background: oklch(0.85 0.13 95 / 0.08);
+  }
+
+  /* ----------- Page transitions ----------- */
+  .page {
+    flex: 1;
+    opacity: 0;
+    transform: translateY(8px);
+    animation: pageIn 0.55s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+  }
+  @keyframes pageIn {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ----------- Common utilities ----------- */
+  .container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 48px;
+  }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .eyebrow::before {
+    content: "";
+    width: 24px; height: 1px;
+    background: var(--accent);
+    opacity: 0.7;
+  }
+
+  .display {
+    font-family: var(--serif);
+    font-weight: 400;
+    line-height: 0.95;
+    letter-spacing: -0.025em;
+  }
+  .display .it { font-style: italic; color: var(--accent); }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 14px 22px;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    color: var(--text);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+  .btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    box-shadow: 0 0 24px oklch(0.85 0.13 95 / 0.18) inset, 0 0 30px oklch(0.85 0.13 95 / 0.1);
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: var(--bg-deep);
+    border-color: var(--accent);
+  }
+  .btn-primary:hover {
+    background: oklch(0.92 0.13 95);
+    color: var(--bg-deep);
+    box-shadow: 0 0 30px var(--accent-glow), 0 0 60px oklch(0.85 0.13 95 / 0.25);
+  }
+  .btn .arrow { transition: transform 0.25s ease; display: inline-block; }
+  .btn:hover .arrow { transform: translateX(4px); }
+
+  /* ----------- Footer ----------- */
+  .footer {
+    margin-top: 80px;
+    padding: 32px 48px;
+    border-top: 1px solid var(--line-soft);
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+  }
+
+  /* ----------- Scrollbar ----------- */
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: var(--bg-deep); }
+  ::-webkit-scrollbar-thumb { background: var(--surface-2); border-radius: 999px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--accent-deep); }
+
+  /* ----------- Selection ----------- */
+  ::selection { background: var(--accent); color: var(--bg-deep); }
+
+  /* ----------- Reduced motion ----------- */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+
+  @media (max-width: 720px) {
+    .nav { padding: 16px 22px; }
+    .container { padding: 0 22px; }
+    .footer { padding: 24px 22px; flex-direction: column; gap: 12px; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+  <div class="sky-bg"></div>
+  <canvas id="stars"></canvas>
+  <div id="root"></div>
+
+  <template id="__bundler_thumbnail" data-bg-color="#0a0805">
+    <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="g" cx="50%" cy="50%" r="60%">
+          <stop offset="0%" stop-color="#3a2a05"/>
+          <stop offset="100%" stop-color="#0a0805"/>
+        </radialGradient>
+      </defs>
+      <rect width="1200" height="800" fill="url(#g)"/>
+      <circle cx="600" cy="400" r="6" fill="#f5c542"/>
+      <circle cx="600" cy="400" r="18" fill="none" stroke="#f5c542" stroke-width="2" opacity="0.4"/>
+      <text x="600" y="430" text-anchor="middle" font-family="Georgia, serif" font-size="160" font-style="italic" fill="#f5c542" opacity="0.9">XP</text>
+    </svg>
+  </template>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+  <script>
+    /* ---------- Animated starfield ---------- */
+    (function() {
+      const canvas = document.getElementById("stars");
+      const ctx = canvas.getContext("2d");
+      let stars = [];
+      let w = 0, h = 0;
+      function resize() {
+        w = canvas.width = window.innerWidth * devicePixelRatio;
+        h = canvas.height = window.innerHeight * devicePixelRatio;
+        canvas.style.width = window.innerWidth + "px";
+        canvas.style.height = window.innerHeight + "px";
+        const count = Math.floor((window.innerWidth * window.innerHeight) / 4500);
+        stars = Array.from({ length: count }, () => ({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          r: Math.random() * 1.4 + 0.2,
+          tw: Math.random() * Math.PI * 2,
+          twSpd: 0.005 + Math.random() * 0.015,
+          drift: 0.02 + Math.random() * 0.04
+        }));
+      }
+      resize();
+      window.addEventListener("resize", resize);
+      function loop() {
+        ctx.clearRect(0, 0, w, h);
+        for (const s of stars) {
+          s.tw += s.twSpd;
+          s.y += s.drift;
+          if (s.y > h) s.y = 0;
+          const alpha = 0.35 + 0.55 * Math.abs(Math.sin(s.tw));
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r * devicePixelRatio, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255, 240, 200, ${alpha})`;
+          ctx.fill();
+        }
+        requestAnimationFrame(loop);
+      }
+      loop();
+    })();
+  </script>
+
+  <script src="image-slot.js"></script>
+  <script type="text/babel" src="data.jsx"></script>
+  <script type="text/babel" src="pages.jsx"></script>
+  <script type="text/babel" src="app.jsx"></script>
+</body>
+</html>
