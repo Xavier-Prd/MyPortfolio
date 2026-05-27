@@ -31,14 +31,25 @@ Rails.application.configure do
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
 
-  # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = false
+  # On veut voir les erreurs d'envoi en dev pour pouvoir les corriger
+  config.action_mailer.raise_delivery_errors = true
 
-  # Make template changes take effect immediately.
   config.action_mailer.perform_caching = false
 
-  # Set localhost to be used by links generated in mailer templates.
   config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
+
+  # On utilise le vrai SMTP Gmail en dev pour pouvoir tester l'envoi réel
+  # Les credentials viennent du fichier .env chargé par dotenv-rails
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address:              "smtp.gmail.com",
+    port:                 587,
+    domain:               "gmail.com",
+    user_name:            ENV["GMAIL_USER"],
+    password:             ENV["GMAIL_APP_PASSWORD"],
+    authentication:       :plain,
+    enable_starttls_auto: true
+  }
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
