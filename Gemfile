@@ -60,6 +60,8 @@ group :development, :test do
 end
 
 group :development do
+  # Charge automatiquement les variables du fichier .env en développement
+  gem "dotenv-rails"
   gem "hotwire-livereload"
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
