@@ -3,6 +3,9 @@ class MessagesController < ApplicationController
   # et n'a pas accès au token Rails généré côté serveur.
   skip_before_action :verify_authenticity_token
 
+  # On autorise l'accès sans être connecté — n'importe qui peut envoyer un message
+  skip_before_action :authenticate_user!
+
   def create
     # On récupère et nettoie les paramètres envoyés depuis le formulaire
     name    = params[:name].to_s.strip
