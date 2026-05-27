@@ -53,21 +53,23 @@ Rails.application.configure do
   config.active_job.queue_adapter = :solid_queue
   config.solid_queue.connects_to = { database: { writing: :queue } }
 
-  # Ignore bad email addresses and do not raise email delivery errors.
-  # Set this to true and configure the email server for immediate delivery to raise delivery errors.
-  # config.action_mailer.raise_delivery_errors = false
+  # On veut être alerté si un email échoue à être envoyé en production
+  config.action_mailer.raise_delivery_errors = true
 
-  # Set host to be used by links generated in mailer templates.
-  config.action_mailer.default_url_options = { host: "example.com" }
+  # Méthode d'envoi : on utilise le serveur SMTP de Gmail
+  config.action_mailer.delivery_method = :smtp
 
-  # Specify outgoing SMTP server. Remember to add smtp/* credentials via bin/rails credentials:edit.
-  # config.action_mailer.smtp_settings = {
-  #   user_name: Rails.application.credentials.dig(:smtp, :user_name),
-  #   password: Rails.application.credentials.dig(:smtp, :password),
-  #   address: "smtp.example.com",
-  #   port: 587,
-  #   authentication: :plain
-  # }
+  # Config SMTP Gmail — les valeurs viennent de variables d'environnement
+  # (ne jamais mettre de mot de passe en dur dans le code)
+  config.action_mailer.smtp_settings = {
+    address:              "smtp.gmail.com",
+    port:                 587,
+    domain:               "gmail.com",
+    user_name:            ENV["GMAIL_USER"],          # ex: pardoue.xavier@gmail.com
+    password:             ENV["GMAIL_APP_PASSWORD"],  # App Password Gmail (pas le vrai mdp)
+    authentication:       :plain,
+    enable_starttls_auto: true                        # chiffrement TLS obligatoire
+  }
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).

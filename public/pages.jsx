@@ -1124,15 +1124,38 @@ function ContactPage() {
     return e;
   }
 
-  function submit(e) {
+  // Appelée quand l'utilisateur clique sur "Envoyer"
+  async function submit(e) {
     e.preventDefault();
+
+    // Validation côté client — on vérifie avant d'envoyer la requête
     const v = validate();
     setErrors(v);
     if (Object.keys(v).length > 0) return;
+
     setStatus("sending");
-    setTimeout(() => {
-      setStatus("sent");
-    }, 1100);
+
+    try {
+      // On envoie les données du formulaire à l'endpoint Rails en JSON
+      const response = await fetch("/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+
+      if (response.ok) {
+        // Succès : Rails a bien reçu et mis l'email en file d'attente
+        setStatus("sent");
+      } else {
+        // Erreur serveur (ex: champ manquant détecté côté Rails)
+        setStatus("idle");
+        setErrors({ message: "Erreur lors de l'envoi. Réessaie." });
+      }
+    } catch {
+      // Erreur réseau (ex: pas de connexion internet)
+      setStatus("idle");
+      setErrors({ message: "Erreur réseau. Vérifie ta connexion et réessaie." });
+    }
   }
 
   function update(k, v) {

@@ -1,0 +1,29 @@
+<%# Template HTML de l'email reçu quand quelqu'un remplit le formulaire de contact %>
+
+<div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 32px; background: #f9f9f9;">
+
+  <h2 style="color: #111; margin-bottom: 4px;">Nouveau message depuis le portfolio</h2>
+  <p style="color: #888; font-size: 14px; margin-top: 0;">Reçu via le formulaire de contact</p>
+
+  <hr style="border: none; border-top: 1px solid #e0e0e0; margin: 24px 0;" />
+
+  <%# Infos de l'expéditeur %>
+  <p><strong>Nom :</strong> <%= @name %></p>
+  <p><strong>Email :</strong> <a href="mailto:<%= @email %>"><%= @email %></a></p>
+
+  <hr style="border: none; border-top: 1px solid #e0e0e0; margin: 24px 0;" />
+
+  <%# Le message lui-même — simple_format convertit les sauts de ligne en <br> %>
+  <p><strong>Message :</strong></p>
+  <div style="background: #fff; padding: 16px; border-left: 3px solid #ccc; border-radius: 4px;">
+    <%= simple_format(@message) %>
+  </div>
+
+  <hr style="border: none; border-top: 1px solid #e0e0e0; margin: 24px 0;" />
+
+  <%# Rappel : répondre à cet email ira directement à l'expéditeur (reply_to) %>
+  <p style="color: #888; font-size: 13px;">
+    Réponds directement à cet email pour contacter <%= @name %>.
+  </p>
+
+</div>
